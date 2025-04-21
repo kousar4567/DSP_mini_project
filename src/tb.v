@@ -24,14 +24,8 @@ initial begin
 	ready=1;
 end
 
-/*always@(posedge clk) begin
-	if (rst) ready<=0;
-	else if (valid) ready<=1;
-	else ready<=0;
 
-end*/
-
-   localparam SF = 2.0**-21;  // 11.21 now  #TODO .21
+   localparam SF = 2.0**-21;  
    reg signed [23:0] real_part;
 reg signed [23:0] imag_part;
 integer file=0;
