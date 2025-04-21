@@ -43,54 +43,5 @@ zc_sequence dut(
 	);
 
 
-	// fft shift
-	localparam SF = 2.0**-14;  // 11.21 now  #TODO .21
-	reg signed [15:0] real_part;
- reg signed [15:0] imag_part;
- integer file=0;
- integer count =0;
-
- initial begin
-	 file = $fopen("fft_shift.dat","w");
- end
- always@(posedge clk) begin
-	 if ((valid_in_ifft && ready_in_ifft ) && file!=0 && count < 128) begin
-			   real_part= data_in_ifft[15:0];
-			  imag_part = data_in_ifft[31:16];
-			  if (imag_part<0) begin
-				  $fwrite(file,"%f%fi",$itor(real_part*SF),$itor(imag_part*SF));
-				  $fwrite(file, "\n");
-			  end
-			  else begin
-				  $fwrite(file,"%f+%fi",$itor(real_part*SF),$itor(imag_part*SF));
-				 $fwrite(file, "\n");
-			  end
-			  count = count +1;
-	 end
- end
-
- // ZC
- reg signed [15:0] real_part_zc;
-reg signed [15:0] imag_part_zc;
-integer file_zc=0;
-integer count_zc =0;
-
-initial begin
-  file_zc = $fopen("ZC.dat","w");
-end
-always@(posedge clk) begin
-  if ((valid_in && ready_out ) && file_zc!=0 && count_zc < 63) begin
-			real_part_zc= sequnce[15:0];
-		   imag_part_zc = sequnce[31:16];
-		   if (imag_part_zc<0) begin
-			   $fwrite(file_zc,"%f%fi",$itor(real_part_zc*SF),$itor(imag_part_zc*SF));
-			   $fwrite(file_zc, "\n");
-		   end
-		   else begin
-			   $fwrite(file_zc,"%f+%fi",$itor(real_part_zc*SF),$itor(imag_part_zc*SF));
-			  $fwrite(file_zc, "\n");
-		   end
-		   count_zc = count_zc +1;
-  end
-end
+	
 endmodule
